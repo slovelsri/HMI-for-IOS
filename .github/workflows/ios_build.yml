@@ -23,11 +23,18 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
         
-      - name: Build iOS IPA (unsigned)
-        run: flutter build ipa --release --no-codesign
+      - name: Build iOS App (unsigned)
+        run: flutter build ios --release --no-codesign
         
+      - name: Package IPA
+        run: |
+          cd build/ios/iphoneos
+          mkdir Payload
+          mv Runner.app Payload/
+          zip -qr app.ipa Payload
+          
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: hmi_viewer-ios
-          path: build/ios/ipa/*.ipa
+          path: build/ios/iphoneos/app.ipa

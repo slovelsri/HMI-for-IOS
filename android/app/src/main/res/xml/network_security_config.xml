@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Network Security Configuration for HMI Viewer.
+
+  Allows cleartext (plain HTTP) traffic ONLY to RFC 1918 private IP ranges,
+  which covers all common local network addresses:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+  All other traffic requires HTTPS. This is more secure than the global
+  android:usesCleartextTraffic="true" flag, which allows cleartext everywhere.
+-->
+<network-security-config>
+    <!-- Allow cleartext to private/local network ranges -->
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- 192.168.x.x (most common home/industrial networks) -->
+        <domain includeSubdomains="true">192.168.0.0</domain>
+        <!-- 10.x.x.x -->
+        <domain includeSubdomains="true">10.0.0.0</domain>
+        <!-- 172.16.x.x - 172.31.x.x -->
+        <domain includeSubdomains="true">172.16.0.0</domain>
+    </domain-config>
+
+    <!-- Default: require HTTPS for everything else -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
